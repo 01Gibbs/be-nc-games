@@ -1,0 +1,4 @@
+node_modules
+.env.*
+prettier.config.js
+playground.sql

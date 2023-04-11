@@ -1,0 +1,220 @@
+{
+    "GET /api": {
+      "description": "serves up a json representation of all the available endpoints of the api"
+    },
+    "GET /api/categories": {
+      "description": "serves an array of all categories",
+      "queries": [],
+      "exampleResponse": {
+        "categories": [
+          {
+            "description": "Players attempt to uncover each other's hidden role",
+            "slug": "Social deduction"
+          }
+        ]
+      }
+    },
+    "GET /api/reviews": {
+      "description": "serves an array of reviews, defaults to length 10",
+      "queries": [
+        "category",
+        "sort_by",
+        "order",
+        "limit",
+        "p"
+      ],
+      "exampleResponse": {
+        "reviews": [
+          {
+            "review_id": 8,
+            "title": "One Night Ultimate Werewolf",
+            "designer": "Akihisa Okui",
+            "owner": "happyamy2016",
+            "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+            "category": "hidden-roles",
+            "created_at": "2021-01-18T10:01:41.251Z",
+            "votes": 5,
+            "comment_count": 0,
+            "total_count": 13
+          }
+        ]
+      }
+    },
+    "GET /api/reviews/:review_id": {
+      "description": "serves specified review",
+      "queries": [],
+      "exampleResponse": {
+        "review": {
+          "review_id": 2,
+          "title": "Jenga",
+          "designer": "'Leslie Scott'",
+          "owner": "'philippaclaire9'",
+          "review_img_url": "'https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700'",
+          "review_body": "'Fiddly fun for all the family'",
+          "category": "'dexterity'",
+          "created_at": "2021-01-18T10:01:41.251Z",
+          "votes": 5,
+          "comment_count": 2
+        }
+      }
+    },
+    "GET /api/reviews/:review_id/comments": {
+      "description": "serves an array of comments, defaults to length 10",
+      "queries": ["limit", "p"],
+      "exampleResponse": [
+        {
+          "comments": [
+            {
+              "comment_id": 1,
+              "votes": 16,
+              "created_at": "2021-01-18T10:01:41.251Z",
+              "author": "bainesface",
+              "body": "I loved this game too!",
+              "review_id": 2
+            }
+          ]
+        }
+      ]
+    },
+    "GET /api/users": {
+      "description": "serves an array of all users",
+      "queries": [],
+      "exampleResponse": {
+        "users": [
+          {
+            "username": "mallionaire",
+            "name": "haz",
+            "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+          }
+        ]
+      }
+    },
+    "GET /api/users/:username": {
+      "description": "serves specified user",
+      "queries": [],
+      "exampleResponse": {
+        "username": "bainesface",
+        "name": "sarah",
+        "avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
+      }
+    },
+    "GET /api/users/:username/votes": {
+      "description": "serves a uservotes object, with a likes and dislikes array containing review_ids",
+      "queries": [],
+      "exampleResponse": {
+        "username": "bainesface",
+        "likes": [1, 3],
+        "dislikes": [5, 8],
+        "neutral": []
+      }
+    },
+    "GET /api/users/:username/votes/categories" : {
+      "description": "serves a uservotes object, with a likes and dislikes array containing categories",
+      "queries": [],
+      "exampleResponse": {
+        "username": "bainesface",
+        "likes": ["hidden-roles"],
+        "dislikes": [],
+        "neutral": []
+      }
+    },
+    "POST /api/reviews/:review_id/comments": {
+      "description": "inserts new comment into table using a request body like below - any extra keys will be ignored. Serves the new comment object with votes initiated at 0",
+      "exampleRequestBody": {
+        "username": "String",
+        "body": "String",
+        "Extra key": "ignored" 
+      },
+      "exampleResponse": {
+        "comment": {
+          "comment_id": 7,
+          "body": "The best game ever!",
+          "votes": 0,
+          "author": "mallionaire",
+          "review_id": 1,
+          "created_at": "2021-01-18T10:01:41.251Z"
+        }
+      }
+    },
+    "POST /api/reviews": {
+      "description": "inserts new review. Serves up review with all properties including votes initiated at 0",
+      "exampleRequestBody": {
+        "owner": "String",
+        "title": "String",
+        "review_body": "String",
+        "designer": "String",
+        "category": "String'",
+        "review_img_url": "Optional String"
+      },
+      "exampleResponse": {
+        "review_id": 14,
+        "title": "'Takenoko'",
+        "designer": "'unknown'",
+        "owner": "'philippaclaire9'",
+        "review_img_url": "'https://fake-address.fake.com'",
+        "review_body": "'Fun with pandas!'",
+        "category": "'dexterity'",
+        "created_at": "Date",
+        "votes": 0,
+        "comment_count": 0
+      }
+    },
+    "POST /api/categories": {
+      "description": "inserts new category. Serves up new category",
+      "exampleRequestBody": {
+        "slug": "String",
+        "description": "Optional String"
+      },
+      "exampleResponse": {
+        "slug": "category name here",
+        "description": "optional description"
+      }
+    },
+    "POST /api/users/:username/votes": {
+      "description": "inserts or updates a like or dislike vote for a user",
+      "exampleRequestBody": {
+        "vote": 1,
+        "review_id": 9
+      }
+    },
+    "PATCH /api/reviews/:review_id": {
+      "description": "Increments the votes column for specified review and then serves the updated review object",
+      "exampleRequestBody": {
+        "inc_votes": 2
+      },
+      "exampleResponse": {
+        "review": {
+          "review_id": 2,
+          "title": "Jenga",
+          "designer": "Leslie Scott",
+          "owner": "philippaclaire9",
+          "review_img_url": "https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700",
+          "review_body": "Fiddly fun for all the family",
+          "category": "dexterity",
+          "created_at": "2021-01-18T10:01:41.251Z",
+          "votes": 7
+        }
+      }
+    },
+    
+    "PATCH /api/comments/:comment_id": {
+      "description": "Increments the votes column for specified comment and then serves the updated comment object",
+      "exampleRequestBody": {
+        "inc_votes": 2
+      },
+      "exampleResponse": {
+        "comment_id": 3,
+        "body": "I didn't know dogs could play games",
+        "votes": 13,
+        "author": "philippaclaire9",
+        "review_id": 3,
+        "created_at": "date"
+      }
+    },
+    "DELETE /api/comments/:comment_id": {
+      "description": "removes comment from comments table"
+    },
+    "DELETE /api/reviews/:review_id": {
+      "description": "removes review from reviews table"
+    }
+  }
